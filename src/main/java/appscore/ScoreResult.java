@@ -1,4 +1,4 @@
-package SQAdapter.scorecalculator;
+package appscore;
 
 public class ScoreResult {
     private String orderNo;

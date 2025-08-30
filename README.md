@@ -1,6 +1,7 @@
 # 环境配置
 
 ## Java配置
+### openjdk配置
 利用IDEA创建项目自动下载openjdk，需要额外配置`JAVA_HOME`环境变量。
 - 1 找到Java安装路径：打开IDEA，File → Project Structure → SDK Location，这里会显示JDK的安装路径
 `C:\Users\AFAN\.jdks\openjdk-24.0.2+12-54`
@@ -20,6 +21,29 @@ openjdk version "24.0.2" 2025-07-15
 OpenJDK Runtime Environment (build 24.0.2+12-54)
 OpenJDK 64-Bit Server VM (build 24.0.2+12-54, mixed mode, sharing)
 ```
+
+### jdk1.8配置
+- 1 打开jdk1.8下载地址：https://www.oracle.com/cn/java/technologies/javase/javase8u211-later-archive-downloads.html ，登录oracle之后下载到本地：jdk-8u451-windows-i586.exe
+- 2 右键"此电脑" → 属性 → 高级系统设置 → 环境变量，在"系统变量"中点击"新建"：
+    - 变量名：JAVA8_HOME
+    - 变量值：你的JDK安装路径，比如：D:\software\java\jdk1.8\
+- 3 编辑Path变量：在Path中添加 %JAVA8_HOME%\bin
+
+验证配置：
+
+```
+(base) C:\Users\AFAN>echo %JAVA8_HOME%
+D:\software\java\jdk1.8\
+
+(base) C:\Users\AFAN>java -version
+java version "1.8.0_451"
+Java(TM) SE Runtime Environment (build 1.8.0_451-b10)
+Java HotSpot(TM) Client VM (build 25.451-b10, mixed mode, sharing)
+```
+
+如果未来还需要有jdk其他版本，如jdk17，只需要创建JAVA17_HOME的环境变量然后在Path中换成它即可
+
+参考：[JDK8和JDK17安装切换，IDEA配置多个版本JDK](https://developer.aliyun.com/article/1416298)
 
 ## maven安装
 1. 下载Maven
@@ -48,3 +72,66 @@ Java version: 24.0.2, vendor: Oracle Corporation, runtime: C:\Users\AFAN\.jdks\o
 Default locale: zh_CN, platform encoding: UTF-8
 OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 ```
+
+# 打包测试
+
+## maven打包
+
+您的项目根目录/
+├── pom.xml          # 项目配置文件
+└── src/
+├── main/
+│   ├── java/    # 【核心】Java源代码目录（会自动编译并打包进JAR）
+│   └── resources/ # 资源文件目录（如配置文件，也会自动打包进JAR）
+└── test/
+├── java/    # 测试代码目录（不会打包进JAR）
+└── resources/ # 测试资源目录（不会打包进JAR）
+
+```
+# 清理旧文件 + 编译 + 打包
+mvn clean package
+```
+
+打包后查看jar包内容
+
+```
+PS D:\git_repo\MexicoAPPFeature> jar tf target/score-calculator.jar
+META-INF/
+META-INF/MANIFEST.MF
+appscore/
+META-INF/maven/
+META-INF/maven/com.sqadapter/
+META-INF/maven/com.sqadapter/app-score/
+appscore/DigitalDictionary.class
+appscore/ScoreCalculator.class
+appscore/ScoreResult.class
+META-INF/maven/com.sqadapter/app-score/pom.xml
+META-INF/maven/com.sqadapter/app-score/pom.properties
+```
+
+## pom.xml说明
+
+1. **`<properties>` 部分**
+- **`<maven.compiler.source>1.8</maven.compiler.source>`**：指定源代码兼容Java 1.8语法。
+- **`<maven.compiler.target>1.8</maven.compiler.target>`**：指定生成的字节码为Java 1.8格式。
+- **`<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>`**：确保源码文件编码一致，避免中文乱码。
+- **插件版本管理**：将插件版本统一管理，便于维护。
+- **`<xjar.password>`**：加密密码，这是保护您代码的关键！**请务必修改为一个强密码**。
+
+2. **`maven-compiler-plugin`（编译器插件）**
+- **作用**：显式强制使用Java 1.8进行编译，优先级高于properties中的配置，确保万无一失。
+- **为什么需要**：即使环境变量或IDE设置有其他JDK版本，这个配置也能保证编译出1.8的字节码。
+
+3. **`maven-assembly-plugin`（打包插件）**
+- **作用**：创建一个"FatJar"或"UberJar"，即将您自己的代码**和所有依赖的第三方库**打包到一个单独的jar文件中。
+- **`<mainClass>`**：**必须修改**为您项目的主类全限定名（如`com.SQAdapter.ScoreCalculatorTest`）。这是程序的入口点。
+- **`<descriptorRef>jar-with-dependencies</descriptorRef>`**：告诉插件使用"包含依赖"的打包方式。
+- **`<appendAssemblyId>false</appendAssemblyId>`**：生成的文件名不带`-jar-with-dependencies`后缀。
+- **`<finalName>score-calculator-fat</finalName>`**：生成的FatJar名称。
+
+4. **`xjar-maven-plugin`（加密插件）**
+- **作用**：对上面生成的FatJar进行加密，得到无法反编译的jar包。
+- **`<password>`**：使用properties中定义的密码进行加密/解密。
+- **`<algorithmes>AQP</algorithmes>`**：指定加密算法。
+- **`<includes>`**：定义需要加密的文件类型（类文件、jar、配置文件等）。
+- **`<targetJar>`**：指定加密后输出的jar包路径和名称。

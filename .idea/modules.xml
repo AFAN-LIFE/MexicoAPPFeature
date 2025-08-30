@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MexicoAPPFeature.iml" filepath="$PROJECT_DIR$/MexicoAPPFeature.iml" />
+      <module fileurl="file://$PROJECT_DIR$/score-calculator.iml" filepath="$PROJECT_DIR$/score-calculator.iml" />
     </modules>
   </component>
 </project>

@@ -5,14 +5,19 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.SQAdapter</groupId>
-    <artifactId>score-calculator</artifactId>
-    <version>1.0.0</version>
+    <groupId>com.sqadapter</groupId>
+    <artifactId>app-score</artifactId>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <!-- 1. 编译器版本属性 -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- 2. 插件版本管理 -->
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     </properties>
 
     <dependencies>
@@ -20,6 +25,36 @@
     </dependencies>
 
     <build>
-        <finalName>score-calculator</finalName>
+        <!-- 最终生成的基础jar包名称 -->
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
+        <plugins>
+            <!-- 插件1：强制指定Java 1.8编译（优先级高于properties配置） -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- 2. 明确配置jar插件，确保生成的是库JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <!-- 明确不设置Main-Class，确保生成的是库JAR -->
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

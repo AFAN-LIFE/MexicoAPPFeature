@@ -1,10 +1,8 @@
-
-import SQAdapter.scorecalculator.ScoreCalculator;
-import SQAdapter.scorecalculator.ScoreResult;
+package appscore;  // 包名与主代码一致
 import java.util.Arrays;
 import java.util.List;
 
-public class Main {
+public class ScoreCalculatorTest {
     public static void main(String[] args) {
         // 创建计算器实例
         ScoreCalculator calculator = new ScoreCalculator();

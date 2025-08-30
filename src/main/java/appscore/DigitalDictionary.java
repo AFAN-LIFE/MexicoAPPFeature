@@ -1,4 +1,4 @@
-package SQAdapter.scorecalculator;
+package appscore;
 
 import java.util.Map;
 import java.util.HashMap;
