@@ -88,6 +88,8 @@ OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 └── resources/ # 测试资源目录（不会打包进JAR）
 
 ```
+# 安装Pom.xml的包
+mvn compile
 # 清理旧文件 + 编译 + 打包
 mvn clean package
 ```
@@ -140,10 +142,116 @@ META-INF/maven/com.sqadapter/app-score/pom.properties
 # 加密测试
 
 ## xjar加密
+地址：https://github.com/core-lib/xjar-maven-plugin
+
+我方pom.xml的properties中增加配置
+```
+        <!-- 3. XJar 加密插件版本和配置 -->
+        <xjar-maven-plugin.version>4.0.2</xjar-maven-plugin.version>
+        <xjar.password>YourStrongPassword123!@#</xjar.password> <!-- 请修改为复杂密码 -->
+        <xjar.algorithm>AES/CBC/PKCS5Padding</xjar.algorithm>
+```
+
+设置仓库下载
+
+```
+    <!-- 设置 jitpack.io 插件仓库 -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </pluginRepository>
+    </pluginRepositories>
+```
+
+插件加密配置
+
+```
+            <!-- 插件3：XJar 加密插件 -->
+            <plugin>
+                <groupId>com.github.core-lib</groupId>
+                <artifactId>xjar-maven-plugin</artifactId>
+                <version>${xjar-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>encrypt-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <configuration>
+                            <password>${xjar.password}</password>
+                            <algorithm>${xjar.algorithm}</algorithm>
+                            <includes>
+                                <include>/**/*.class</include>
+                                <include>/**/*.jar</include>
+                                <include>/**/*.xml</include>
+                                <include>/**/*.properties</include>
+                                <include>/**/*.yml</include>
+                                <include>/**/*.yaml</include>
+                            </includes>
+                            <excludes>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
+                            </excludes>
+                            <!--XJar 插件默认输出目录就是 ${project.build.directory}（即 target/ 目录），所以您不需要再指定一次完整路径。-->
+                            <targetJar>${project.artifactId}-${project.version}-encrypted.jar</targetJar>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+```
+
 甲方添加后执行
 ```
 mvn test -DargLine="-Dxjar.password=YourStrongPassword123!@#"
 ```
 
+
+## proguard加密
+地址：https://github.com/Guardsquare/proguard
+
+pom.xml配置。只将开放给对方的接口不变，其他都混淆
+```
+            <!-- ProGuard 混淆插件 -->
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>${proguard-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--插件默认输出目录就是 ${project.build.directory}（即 target/ 目录），所以您不需要再指定一次完整路径。-->
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}-obfuscated.jar</outjar>
+
+                    <!-- 常用配置 -->
+                    <options>
+                        <!-- 保留 main 方法 -->
+                        <option>-keep public class * {
+                            public static void main(java.lang.String[]);
+                            }</option>
+
+                        <!-- 保留 ScoreResult 方法 -->
+                        <option>-keep class appscore.ScoreCalculator { *; }</option>
+
+                        <!-- 混淆其他所有类和方法 -->
+                        <option>-dontwarn java.**</option>
+                        <option>-dontoptimize</option>
+                        <option>-dontshrink</option>
+                        <!-- 混淆类和方法名 -->
+                        <option>-overloadaggressively</option>
+                        <option>-useuniqueclassmembernames</option>
+                    </options>
+                </configuration>
+            </plugin>
+```
+
 ## 反编译
-https://www.shenmeapp.com/zh-CN/decompiler
+proguard反编译：https://www.shenmeapp.com/zh-CN/decompiler  
+xjar包破解方法：https://blog.csdn.net/Tuine/article/details/126176654
