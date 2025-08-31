@@ -1,0 +1,3 @@
+appscore.DigitalDictionary
+appscore.ScoreCalculator
+appscore.ScoreResult

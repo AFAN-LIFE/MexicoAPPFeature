@@ -1,0 +1,21 @@
+appscore.DigitalDictionary -> appscore.DigitalDictionary:
+    java.util.Map APP_SCORES -> a
+    void <init>() -> <init>
+    int getScore(java.lang.String) -> a
+    void setScore(java.lang.String,int) -> a
+    java.util.Map getAllScores() -> a
+    void <clinit>() -> <clinit>
+appscore.ScoreCalculator -> appscore.ScoreCalculator:
+    void <init>() -> <init>
+    appscore.ScoreResult calculateScores(java.lang.String,java.util.List) -> a
+    java.util.List calculateBatchScores(java.util.Map) -> a
+    appscore.ScoreResult lambda$calculateBatchScores$0(java.util.Map$Entry) -> a
+appscore.ScoreResult -> appscore.ScoreResult:
+    java.lang.String orderNo -> a
+    int totalScore -> a
+    int maxScore -> b
+    void <init>(java.lang.String,int,int) -> <init>
+    java.lang.String getOrderNo() -> a
+    int getTotalScore() -> a
+    int getMaxScore() -> b
+    java.lang.String toString() -> b

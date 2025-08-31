@@ -19,11 +19,7 @@
         <!-- 2. 插件版本管理 -->
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
-
-        <!-- 3. XJar 加密插件版本和配置 -->
-        <xjar-maven-plugin.version>4.0.2</xjar-maven-plugin.version>
-        <xjar.password>YourStrongPassword123!@#</xjar.password> <!-- 请修改为复杂密码 -->
-        <xjar.algorithm>AES/CBC/PKCS5Padding</xjar.algorithm>
+        <proguard-maven-plugin.version>2.6.0</proguard-maven-plugin.version>
     </properties>
 
     <!-- 设置 jitpack.io 插件仓库 -->
@@ -65,38 +61,40 @@
                     </archive>
                 </configuration>
             </plugin>
-
-            <!-- 插件3：XJar 加密插件 -->
+            <!-- ProGuard 混淆插件 -->
             <plugin>
-                <groupId>com.github.core-lib</groupId>
-                <artifactId>xjar-maven-plugin</artifactId>
-                <version>${xjar-maven-plugin.version}</version>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>${proguard-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>encrypt-jar</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>build</goal>
+                            <goal>proguard</goal>
                         </goals>
-                        <configuration>
-                            <password>${xjar.password}</password>
-                            <algorithm>${xjar.algorithm}</algorithm>
-                            <includes>
-                                <include>/**/*.class</include>
-                                <include>/**/*.jar</include>
-                                <include>/**/*.xml</include>
-                                <include>/**/*.properties</include>
-                                <include>/**/*.yml</include>
-                                <include>/**/*.yaml</include>
-                            </includes>
-                            <excludes>
-                                <exclude>META-INF/MANIFEST.MF</exclude>
-                            </excludes>
-                            <!--XJar 插件默认输出目录就是 ${project.build.directory}（即 target/ 目录），所以您不需要再指定一次完整路径。-->
-                            <targetJar>${project.artifactId}-${project.version}-encrypted.jar</targetJar>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <!--插件默认输出目录就是 ${project.build.directory}（即 target/ 目录），所以您不需要再指定一次完整路径。-->
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}-obfuscated.jar</outjar>
+
+                    <!-- 常用配置 -->
+                    <options>
+                        <!-- 保留 main 方法 -->
+                        <option>-keep public class * {
+                            public static void main(java.lang.String[]);
+                            }</option>
+
+                        <!-- 混淆其他所有类和方法 -->
+                        <option>-dontwarn java.**</option>
+                        <option>-dontoptimize</option>
+                        <option>-dontshrink</option>
+                        <!-- 混淆类和方法名 -->
+                        <option>-overloadaggressively</option>
+                        <option>-useuniqueclassmembernames</option>
+                    </options>
+                </configuration>
             </plugin>
         </plugins>
     </build>
