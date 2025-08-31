@@ -135,3 +135,15 @@ META-INF/maven/com.sqadapter/app-score/pom.properties
 - **`<algorithmes>AQP</algorithmes>`**：指定加密算法。
 - **`<includes>`**：定义需要加密的文件类型（类文件、jar、配置文件等）。
 - **`<targetJar>`**：指定加密后输出的jar包路径和名称。
+
+
+# 加密测试
+
+## xjar加密
+甲方添加后执行
+```
+mvn test -DargLine="-Dxjar.password=YourStrongPassword123!@#"
+```
+
+## 反编译
+https://www.shenmeapp.com/zh-CN/decompiler

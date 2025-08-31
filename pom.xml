@@ -86,6 +86,9 @@
                             public static void main(java.lang.String[]);
                             }</option>
 
+                        <!-- 保留 ScoreResult 方法 -->
+                        <option>-keep class appscore.ScoreCalculator { *; }</option>
+
                         <!-- 混淆其他所有类和方法 -->
                         <option>-dontwarn java.**</option>
                         <option>-dontoptimize</option>

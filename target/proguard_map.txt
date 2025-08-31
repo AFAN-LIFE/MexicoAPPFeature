@@ -11,11 +11,11 @@ appscore.ScoreCalculator -> appscore.ScoreCalculator:
     java.util.List calculateBatchScores(java.util.Map) -> a
     appscore.ScoreResult lambda$calculateBatchScores$0(java.util.Map$Entry) -> a
 appscore.ScoreResult -> appscore.ScoreResult:
-    java.lang.String orderNo -> a
-    int totalScore -> a
-    int maxScore -> b
+    java.lang.String orderNo -> orderNo
+    int totalScore -> totalScore
+    int maxScore -> maxScore
     void <init>(java.lang.String,int,int) -> <init>
-    java.lang.String getOrderNo() -> a
-    int getTotalScore() -> a
-    int getMaxScore() -> b
-    java.lang.String toString() -> b
+    java.lang.String getOrderNo() -> getOrderNo
+    int getTotalScore() -> getTotalScore
+    int getMaxScore() -> getMaxScore
+    java.lang.String toString() -> toString

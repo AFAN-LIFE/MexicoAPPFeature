@@ -18,7 +18,7 @@
     <property name="user.country" value="CN"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="D:\software\java\jdk1.8\jre\bin"/>
-    <property name="sun.java.command" value="C:\Users\AFAN\AppData\Local\Temp\surefire2917498326662647586\surefirebooter-20250830195510193_3.jar C:\Users\AFAN\AppData\Local\Temp\surefire2917498326662647586 2025-08-30T19-55-09_761-jvmRun1 surefire-20250830195510193_1tmp surefire_0-20250830195510193_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\AFAN\AppData\Local\Temp\surefire6347251884900244092\surefirebooter-20250831204838440_3.jar C:\Users\AFAN\AppData\Local\Temp\surefire6347251884900244092 2025-08-31T20-48-37_979-jvmRun1 surefire-20250831204838440_1tmp surefire_0-20250831204838440_2tmp"/>
     <property name="surefire.test.class.path" value="D:\git_repo\MexicoAPPFeature\target\test-classes;D:\git_repo\MexicoAPPFeature\target\classes;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\AFAN"/>
@@ -31,7 +31,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\AFAN\AppData\Local\Temp\surefire2917498326662647586\surefirebooter-20250830195510193_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\AFAN\AppData\Local\Temp\surefire6347251884900244092\surefirebooter-20250831204838440_3.jar"/>
     <property name="sun.boot.class.path" value="D:\software\java\jdk1.8\jre\lib\resources.jar;D:\software\java\jdk1.8\jre\lib\rt.jar;D:\software\java\jdk1.8\jre\lib\jsse.jar;D:\software\java\jdk1.8\jre\lib\jce.jar;D:\software\java\jdk1.8\jre\lib\charsets.jar;D:\software\java\jdk1.8\jre\lib\jfr.jar;D:\software\java\jdk1.8\jre\classes"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot Client Compiler"/>

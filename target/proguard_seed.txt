@@ -1,3 +1,11 @@
 appscore.DigitalDictionary
 appscore.ScoreCalculator
 appscore.ScoreResult
+appscore.ScoreResult: java.lang.String orderNo
+appscore.ScoreResult: int totalScore
+appscore.ScoreResult: int maxScore
+appscore.ScoreResult: ScoreResult(java.lang.String,int,int)
+appscore.ScoreResult: java.lang.String getOrderNo()
+appscore.ScoreResult: int getTotalScore()
+appscore.ScoreResult: int getMaxScore()
+appscore.ScoreResult: java.lang.String toString()
