@@ -23,6 +23,7 @@
     </properties>
 
     <dependencies>
+
         <!-- Jackson 核心库 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -84,6 +85,7 @@
                     </archive>
                 </configuration>
             </plugin>
+
             <!-- ProGuard 混淆插件 -->
             <plugin>
                 <groupId>com.github.wvengen</groupId>
@@ -110,7 +112,7 @@
                             }</option>
 
                         <!-- 保留 ScoreResult 方法 -->
-                        <option>-keep class appscore.ScoreCalculator { *; }</option>
+                        <option>-keep class appscore.ScoreResult { *; }</option>
 
                         <!-- 混淆其他所有类和方法 -->
                         <option>-dontwarn java.**</option>
@@ -121,6 +123,26 @@
                         <option>-useuniqueclassmembernames</option>
                     </options>
                 </configuration>
+            </plugin>
+
+            <!--    4. Shade 插件：打 fat-jar，包含混淆后的库 + 依赖：无法同时包含混淆后代码和依赖-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <classifier>all</classifier> <!-- 输出 app-score-1.0-all.jar -->
+                            <!-- 默认会把混淆后的 jar + 所有依赖打进去 -->
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

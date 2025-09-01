@@ -1,21 +1,19 @@
-appscore.DigitalDictionary -> appscore.DigitalDictionary:
-    java.util.Map APP_SCORES -> a
-    void <init>() -> <init>
-    int getScore(java.lang.String) -> a
-    void setScore(java.lang.String,int) -> a
-    java.util.Map getAllScores() -> a
-    void <clinit>() -> <clinit>
 appscore.ScoreCalculator -> appscore.ScoreCalculator:
+    double[] a -> a
+    double[] b -> b
     void <init>() -> <init>
-    appscore.ScoreResult calculateScores(java.lang.String,java.util.List) -> a
-    java.util.List calculateBatchScores(java.util.Map) -> a
-    appscore.ScoreResult lambda$calculateBatchScores$0(java.util.Map$Entry) -> a
+    java.util.Map a(java.lang.String,java.util.List) -> a
+    double a(java.util.List,double) -> a
+    java.util.Map a() -> a
+    double lambda$a$6(double,java.lang.Double) -> a
+    boolean lambda$a$5(double,java.lang.Double) -> a
+    boolean lambda$a$4(double,java.lang.Double) -> b
+    double lambda$a$3(java.lang.Double) -> a
+    double lambda$a$2(java.lang.Double) -> b
+    double lambda$a$1(java.lang.Double) -> c
+    java.lang.String lambda$a$0(java.lang.String) -> a
+    void <clinit>() -> <clinit>
 appscore.ScoreResult -> appscore.ScoreResult:
-    java.lang.String orderNo -> orderNo
-    int totalScore -> totalScore
-    int maxScore -> maxScore
-    void <init>(java.lang.String,int,int) -> <init>
-    java.lang.String getOrderNo() -> getOrderNo
-    int getTotalScore() -> getTotalScore
-    int getMaxScore() -> getMaxScore
-    java.lang.String toString() -> toString
+    void <init>() -> <init>
+    java.lang.String calculate(java.lang.String,java.util.List) -> calculate
+    void main(java.lang.String[]) -> main

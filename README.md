@@ -88,7 +88,9 @@ OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 └── resources/ # 测试资源目录（不会打包进JAR）
 
 ```
-# 安装Pom.xml的包
+# 只下载依赖，不编译
+mvn dependency:resolve
+# 下载依赖+编译源码
 mvn compile
 # 清理旧文件 + 编译 + 打包
 mvn clean package
@@ -137,6 +139,27 @@ META-INF/maven/com.sqadapter/app-score/pom.properties
 - **`<algorithmes>AQP</algorithmes>`**：指定加密算法。
 - **`<includes>`**：定义需要加密的文件类型（类文件、jar、配置文件等）。
 - **`<targetJar>`**：指定加密后输出的jar包路径和名称。
+
+
+## 混淆打包
+
+mvn install:install-file 这是 Maven 自带的一个目标（goal），用来 手动安装一个 jar 到本地 Maven 仓库。
+
+| 参数                                           | 含义                                         |
+| -------------------------------------------- | ------------------------------------------ |
+| `-Dfile=target/app-score-1.0-obfuscated.jar` | 指定要安装的 jar 文件路径，也就是 ProGuard 混淆生成的 jar     |
+| `-DgroupId=com.sqadapter`                    | Maven 坐标中的 groupId，类似包名空间，用于唯一标识这个库        |
+| `-DartifactId=app-score`                     | Maven 坐标中的 artifactId，代表这个 jar 的名称         |
+| `-Dversion=1.0-obfuscated`                   | Maven 坐标中的版本号，这里给混淆后的 jar 一个特殊版本号，区分原始 jar |
+| `-Dpackaging=jar`                            | 指定打包类型，这里是 jar                             |
+
+```
+ mvn install:install-file -"Dfile=target/app-score-1.0-obfuscated.jar" -DgroupId="com.sqadapter" -DartifactId="app-score" -Dversion="1.0-obfuscated" -Dpackaging="jar"
+```
+
+执行成功后可以在maven仓库中查看到：`C:\Users\AFAN\.m2\repository`
+
+具体位置在：`C:\Users\AFAN\.m2\repository\com\sqadapter\app-score\1.0-obfuscated`
 
 
 # 加密测试
@@ -255,3 +278,8 @@ pom.xml配置。只将开放给对方的接口不变，其他都混淆
 ## 反编译
 proguard反编译：https://www.shenmeapp.com/zh-CN/decompiler  
 xjar包破解方法：https://blog.csdn.net/Tuine/article/details/126176654
+
+打包问题：
+- 如果直接用proguard生成jar交付，则没有jackson这些依赖
+- 如果用proguard+shaded，则源代码就不会加密，尝试过先混淆后jar包进去，但是由于不依赖，业务代码不会被加入
+- 所以只能先用proguard生成代码再反编译回去，之后再去打包。但是class文件丢失了很多类型声明，需要手动改之后才能重新打包。
